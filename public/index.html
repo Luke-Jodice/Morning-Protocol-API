@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      if ("geolocation" in navigator) {
+        console.log("geolocation avaliable");
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          console.log(position);
+          const long = position.coords.longitude;
+          const lat = position.coords.latitude;
+          document.getElementById("lat").textContent = lat;
+          document.getElementById("long").textContent = long;
+
+          const data = { long, lat };
+          const options = {
+            method: "post",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+          const response = await fetch("/coords", options);
+          const json = await response.json();
+          console.log(json);
+        });
+      } else {
+        console.log("geolocation not avaliable");
+      }
+    </script>
+    This is the website!!!!!!
+    <p><span id="long"></span>&deg; <span id="lat"></span>&deg;</p>
+  </body>
+</html>
