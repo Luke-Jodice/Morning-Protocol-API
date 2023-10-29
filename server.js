@@ -18,3 +18,28 @@ app.post("/coords", (req, res) => {
   const data = req.body;
   res.json({ status: "Sucess", long: data.long, lat: data.lat });
 });
+
+app.get("/weather", (req, res) => {
+  var getreq = fetch("weatherEX.json");
+  const json = getreq.json();
+  console.log(json);
+});
+
+//LOCAL TESTING ROUTE
+app.get("/weatherlocal", (req, res) => {
+  fs.readFile("weatherEX.json", "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading the file:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      try {
+        const json = JSON.parse(data);
+        console.log(json);
+        res.json(json); // Send the JSON data as a response
+      } catch (parseError) {
+        console.error("Error parsing JSON:", parseError);
+        res.status(500).send("Internal Server Error");
+      }
+    }
+  });
+});
