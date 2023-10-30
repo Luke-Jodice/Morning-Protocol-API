@@ -1,7 +1,24 @@
 var fs = require("fs");
 var express = require("express");
+// var mongoose = require("mongoose");
 
 var app = express();
+
+// const weatherschema = new mongoose.Schema({
+//   precipitation: Boolean,
+//   tempC : Number,
+//   weatherdesc : String,
+//   pictureURL : URL
+// });
+// const Weather = mongoose.model("Weather",weatherschema);
+
+// const todayschema = new mongoose.Schema({
+//   weather : Weather
+// });
+
+// const Today = mongoose.model("today",todayschema);
+
+// mongoose.connect("mongodb://127.0.0.1:27017/test");
 
 console.log("server starting");
 
@@ -16,7 +33,7 @@ app.post("/coords", (req, res) => {
   console.log("got post");
   console.log(req.body);
   const data = req.body;
-  res.json({ status: "Sucess", long: data.long, lat: data.lat });
+  res.json({ status: "Success", long: data.long, lat: data.lat });
 });
 
 app.get("/weather", (req, res) => {
@@ -34,8 +51,8 @@ app.get("/weatherlocal", (req, res) => {
     } else {
       try {
         const json = JSON.parse(data);
-        console.log(json);
-        res.json(json); // Send the JSON data as a response
+        var currweather = json.current;
+        res.json(currweather); // Send the JSON data as a response
       } catch (parseError) {
         console.error("Error parsing JSON:", parseError);
         res.status(500).send("Internal Server Error");
