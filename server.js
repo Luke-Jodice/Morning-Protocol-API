@@ -1,8 +1,10 @@
 var fs = require("fs");
 var express = require("express");
 // var mongoose = require("mongoose");
-const stops = "tstops.json";
+const stops = "mbta-json/tstops.json";
 var app = express();
+const trainStops = [];
+app.set("json spaces", 2);
 
 // const weatherschema = new mongoose.Schema({
 //   precipitation: Boolean,
@@ -26,8 +28,51 @@ var server = app.listen(3000);
 app.use(express.static("public"));
 app.use(express.json());
 
+getstops();
 //encorporate this:
 //https://developer.here.com/develop/javascript-api
+
+function getstops() {
+  if (trainStops.length === 0) {
+    console.log("nothing");
+    fs.readFile(stops, "utf8", (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error reading the JSON file");
+      } else {
+        const jsonData = JSON.parse(data);
+        console.log(jsonData["data"][0]);
+        if (trainStops.length === 0) {
+          console.log("yep");
+          console.log(jsonData["data"].length);
+          console.log(jsonData["data"][1]["id"]);
+
+          for (var i = 0; i < jsonData["data"].length; i++) {
+            var idx = jsonData["data"][i];
+            var obj = {
+              lineName: idx["id"],
+              lineColor: idx["attributes"]["color"],
+              trackEnds: [
+                {
+                  name: idx["attributes"]["direction_destinations"][0],
+                  direction: idx["attributes"]["direction_names"][0],
+                },
+                {
+                  name: idx["attributes"]["direction_destinations"][1],
+                  direction: idx["attributes"]["direction_names"][1],
+                },
+              ],
+            };
+            trainStops.push(obj);
+          }
+        }
+      }
+    });
+  } else {
+    console.log(trainStops.length);
+    return trainStops;
+  }
+}
 
 app.post("/coords", (req, res) => {
   console.log("got post");
@@ -90,7 +135,76 @@ app.get("/trains", (req, res) => {
     } else {
       const jsonData = JSON.parse(data);
       console.log(jsonData["data"][0]);
-      res.json(jsonData);
+      if (trainStops.length === 0) {
+        console.log("yep");
+        console.log(jsonData["data"].length);
+        console.log(jsonData["data"][1]["id"]);
+
+        for (var i = 0; i < jsonData["data"].length; i++) {
+          var idx = jsonData["data"][i];
+          var obj = {
+            lineName: idx["id"],
+            lineColor: idx["attributes"]["color"],
+            trackEnds: [
+              {
+                name: idx["attributes"]["direction_destinations"][0],
+                direction: idx["attributes"]["direction_names"][0],
+              },
+              {
+                name: idx["attributes"]["direction_destinations"][1],
+                direction: idx["attributes"]["direction_names"][1],
+              },
+            ],
+          };
+          trainStops.push(obj);
+        }
+      }
+      getstops();
+      res.json(trainStops);
     }
   });
+});
+
+app.get("/trains/:lineName", (req, res) => {
+  var stops = [];
+  fs.readFile(stops, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error reading the JSON file");
+    } else {
+      const jsonData = JSON.parse(data);
+      console.log(jsonData["data"][0]);
+      if (trainStops.length === 0) {
+        console.log("yep");
+        console.log(jsonData["data"].length);
+        console.log(jsonData["data"][1]["id"]);
+
+        for (var i = 0; i < jsonData["data"].length; i++) {
+          var idx = jsonData["data"][i];
+          var obj = {
+            lineName: idx["id"],
+            lineColor: idx["attributes"]["color"],
+            trackEnds: [
+              {
+                name: idx["attributes"]["direction_destinations"][0],
+                direction: idx["attributes"]["direction_names"][0],
+              },
+              {
+                name: idx["attributes"]["direction_destinations"][1],
+                direction: idx["attributes"]["direction_names"][1],
+              },
+            ],
+          };
+          stops.push(obj);
+          // if (obj.lineName === req.params.lineName) {
+          //   console.log("same");
+          //   res.json(obj);
+          //   return;
+          // }
+        }
+      }
+    }
+  });
+
+  res.json(req.params);
 });
