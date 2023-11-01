@@ -20,6 +20,7 @@
             weather_desc: data["weather_descriptions"][0],
           };
           document.getElementById("temp").textContent = weather.temp;
+          document.getElementById("desc").textContent = weather.weather_desc;
         });
     </script>
 
@@ -30,8 +31,8 @@
           console.log(position);
           const long = position.coords.longitude;
           const lat = position.coords.latitude;
-          document.getElementById("lat").textContent = lat;
-          document.getElementById("long").textContent = long;
+          document.getElementById("lat").textContent = Math.floor(lat);
+          document.getElementById("long").textContent = Math.floor(long);
 
           const data = { long, lat };
           const options = {
@@ -51,8 +52,9 @@
     </script>
     <h1>Good Morning Protocol</h1>
     This is the website!!!!!!
-    <p><span id="long"></span>&deg; <span id="lat"></span>&deg;</p>
+    <p><span id="long"></span>&deg;,<span id="lat"></span>&deg;</p>
 
-    <span id="temp"></span>&deg;
+    <span id="temp"></span>&deg; <br />
+    <span id="desc"></span>
   </body>
 </html>

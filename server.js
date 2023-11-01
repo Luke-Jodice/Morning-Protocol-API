@@ -1,7 +1,7 @@
 var fs = require("fs");
 var express = require("express");
 // var mongoose = require("mongoose");
-
+const stops = "tstops.json";
 var app = express();
 
 // const weatherschema = new mongoose.Schema({
@@ -57,6 +57,40 @@ app.get("/weatherlocal", (req, res) => {
         console.error("Error parsing JSON:", parseError);
         res.status(500).send("Internal Server Error");
       }
+    }
+  });
+});
+
+app.get("/stops", (req, res) => {
+  fs.readFile("tstops.json", "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading the file:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      try {
+        const json = JSON.parse(data);
+        console.log(json);
+        res.json({
+          status: "Success",
+          data: json,
+        });
+      } catch (parseError) {
+        console.error("Error parsing JSON:", parseError);
+        res.status(500).send("Internal Server Error");
+      }
+    }
+  });
+});
+
+app.get("/trains", (req, res) => {
+  fs.readFile(stops, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error reading the JSON file");
+    } else {
+      const jsonData = JSON.parse(data);
+      console.log(jsonData["data"][0]);
+      res.json(jsonData);
     }
   });
 });
