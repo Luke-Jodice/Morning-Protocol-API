@@ -4,3 +4,4 @@ node_modules
 .env*.local
 
 weatherEX.json
+mbta-json/*
