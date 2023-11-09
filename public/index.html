@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,54 +6,59 @@
   </head>
   <body
     style="text-align: center; font-family: 'Courier New', Courier, monospace">
-    <script>
-      function ctof(temp) {
-        return;
-      }
-
-      fetch("/weatherlocal")
-        .then((response) => response.json())
-        .then((data) => {
-          const weather = {
-            temp: data["temperature"],
-            weather_desc: data["weather_descriptions"][0],
-          };
-          document.getElementById("temp").textContent = weather.temp;
-          document.getElementById("desc").textContent = weather.weather_desc;
-        });
-    </script>
-
-    <script>
-      if ("geolocation" in navigator) {
-        console.log("geolocation avaliable");
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          console.log(position);
-          const long = position.coords.longitude;
-          const lat = position.coords.latitude;
-          document.getElementById("lat").textContent = Math.floor(lat);
-          document.getElementById("long").textContent = Math.floor(long);
-
-          const data = { long, lat };
-          const options = {
-            method: "post",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          };
-          const response = await fetch("/coords", options);
-          const json = await response.json();
-          console.log(json);
-        });
-      } else {
-        console.log("geolocation not avaliable");
-      }
-    </script>
     <h1>Good Morning Protocol</h1>
-    This is the website!!!!!!
-    <p><span id="long"></span>&deg;,<span id="lat"></span>&deg;</p>
+    <p><span id="long"></span>&deg;, <span id="lat"></span>&deg;</p>
+    <p><span id="temp"></span>&deg;</p>
+    <p><span id="desc"></span></p>
 
-    <span id="temp"></span>&deg; <br />
-    <span id="desc"></span>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Fetch weather data
+        fetch("/weatherlocal")
+          .then((response) => response.json())
+          .then((data) => {
+            const weather = {
+              temp: data.temperature,
+              weather_desc: data.weather_descriptions[0],
+            };
+            document.getElementById("temp").textContent = weather.temp;
+            document.getElementById("desc").textContent = weather.weather_desc;
+          })
+          .catch((error) =>
+            console.error("Error fetching weather data:", error)
+          );
+
+        // Fetch geolocation data
+        if ("geolocation" in navigator) {
+          console.log("Geolocation available");
+          navigator.geolocation.getCurrentPosition(async (position) => {
+            console.log(position);
+            const long = position.coords.longitude;
+            const lat = position.coords.latitude;
+            document.getElementById("lat").textContent = Math.floor(lat);
+            document.getElementById("long").textContent = Math.floor(long);
+
+            const data = { long, lat };
+            const options = {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            };
+
+            try {
+              const response = await fetch("/coords", options);
+              const json = await response.json();
+              console.log(json);
+            } catch (error) {
+              console.error("Error fetching geolocation data:", error);
+            }
+          });
+        } else {
+          console.log("Geolocation not available");
+        }
+      });
+    </script>
   </body>
 </html>
