@@ -16,6 +16,7 @@ app.post("/coords", (req, res) => {
   res.json({ status: "Success", long: data.long, lat: data.lat });
 });
 
+
 //this will need to be Made as a repo on its own
 app.get("/weather", async (req, res) => {
   try {

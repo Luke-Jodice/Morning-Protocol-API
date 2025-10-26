@@ -1,0 +1,27 @@
+{
+  "Name": "Luke Jodice",
+  "Email": "jodiceluke@gmail.com",
+  "Phone": 3242,
+  "Options": {
+    "train": true,
+    "Weather": true,
+    "News": true,
+    "Stocks": true
+  },
+  "train": {
+    "StopName": "stop-main",
+    "StopFull": "North Station",
+    "DepartTime": "20:38:00"
+  },
+  "Weather": {
+    "LocName": "Boston"
+  },
+  "News": {
+    "City": "Boston",
+    "Topics": ["Biz", "Sports", "Tech"]
+  },
+  "Stocks":{
+    "Market":"US",
+    "Symbols":["TSA","CSDD","DSSE","PEP"]
+    }
+}
