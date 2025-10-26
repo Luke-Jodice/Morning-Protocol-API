@@ -1,64 +1,21 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Good Morning!</title>
-  </head>
-  <body
-    style="text-align: center; font-family: 'Courier New', Courier, monospace">
-    <h1>Good Morning Protocol</h1>
-    <p><span id="long"></span>&deg;, <span id="lat"></span>&deg;</p>
-    <p><span id="temp"></span>&deg;</p>
-    <p><span id="desc"></span></p>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Fetch weather data
-        fetch("/weatherlocal")
-          .then((response) => response.json())
-          .then((data) => {
-            const weather = {
-              temp: data.temperature,
-              weather_desc: data.weather_descriptions[0],
-            };
-            document.getElementById("temp").textContent = weather.temp;
-            document.getElementById("desc").textContent = weather.weather_desc;
-          })
-          .catch((error) =>
-            console.error("Error fetching weather data:", error)
-          );
-
-        // Fetch geolocation data
-        if ("geolocation" in navigator) {
-          console.log("Geolocation available");
-          navigator.geolocation.getCurrentPosition(async (position) => {
-            console.log(position);
-            const long = position.coords.longitude;
-            const lat = position.coords.latitude;
-            document.getElementById("lat").textContent = Math.floor(lat);
-            document.getElementById("long").textContent = Math.floor(long);
-
-            const data = { long, lat };
-            const options = {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            };
-
-            try {
-              const response = await fetch("/coords", options);
-              const json = await response.json();
-              console.log(json);
-            } catch (error) {
-              console.error("Error fetching geolocation data:", error);
-            }
-          });
-        } else {
-          console.log("Geolocation not available");
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Protocol</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-      });
-    </script>
-  </body>
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Morning Protocol</h1>
+</body>
 </html>
