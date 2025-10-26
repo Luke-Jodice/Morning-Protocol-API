@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/main.css">
+    <title>Registration Form</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .form-section { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .hidden { display: none; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input[type="text"], input[type="email"], input[type="number"], input[type="time"] { width: calc(100% - 22px); padding: 10px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; }
+        input[type="checkbox"] { margin-right: 10px; }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        h1, h3 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form id="registrationForm">
+        <div class="form-section">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="Name" value="Luke Jodice">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="Email" value="jodiceluke@gmail.com">
+            <label for="phone">Phone:</label>
+            <input type="number" id="phone" name="Phone" value="3242">
+        </div>
+
+        <div class="form-section">
+            <h3>Options</h3>
+            <input type="checkbox" id="optionTrain" name="Options.train" onchange="toggleSection('train')" checked>
+            <label for="optionTrain" style="display: inline;">Train</label><br>
+            <input type="checkbox" id="optionWeather" name="Options.Weather" onchange="toggleSection('weather')" checked>
+            <label for="optionWeather" style="display: inline;">Weather</label><br>
+            <input type="checkbox" id="optionNews" name="Options.News" onchange="toggleSection('news')" checked>
+            <label for="optionNews" style="display: inline;">News</label><br>
+            <input type="checkbox" id="optionStocks" name="Options.Stocks" onchange="toggleSection('stocks')" checked>
+            <label for="optionStocks" style="display: inline;">Stocks</label><br>
+        </div>
+
+        <div id="trainSection" class="form-section">
+            <h3>Train Details</h3>
+            <label for="trainStopName">Stop Name:</label>
+            <input type="text" id="trainStopName" name="train.StopName" value="stop-main">
+            <label for="trainStopFull">Stop Full Name:</label>
+            <input type="text" id="trainStopFull" name="train.StopFull" value="North Station">
+            <label for="trainDepartTime">Departure Time:</label>
+            <input type="time" id="trainDepartTime" name="train.DepartTime" value="20:38:00">
+        </div>
+
+        <div id="weatherSection" class="form-section">
+            <h3>Weather Details</h3>
+            <label for="weatherLocName">Location Name:</label>
+            <input type="text" id="weatherLocName" name="Weather.LocName" value="Boston">
+        </div>
+
+        <div id="newsSection" class="form-section">
+            <h3>News Details</h3>
+            <label for="newsCity">City:</label>
+            <input type="text" id="newsCity" name="News.City" value="Boston">
+            <h4>Topics</h4>
+            <input type="checkbox" id="newsTopicBiz" name="News.Topics" value="Biz" checked>
+            <label for="newsTopicBiz" style="display: inline;">Business</label><br>
+            <input type="checkbox" id="newsTopicSports" name="News.Topics" value="Sports" checked>
+            <label for="newsTopicSports" style="display: inline;">Sports</label><br>
+            <input type="checkbox" id="newsTopicTech" name="News.Topics" value="Tech" checked>
+            <label for="newsTopicTech" style="display: inline;">Tech</label><br>
+        </div>
+
+        <div id="stocksSection" class="form-section">
+            <h3>Stocks Details</h3>
+            <label for="stocksMarket">Market:</label>
+            <input type="text" id="stocksMarket" name="Stocks.Market" value="US">
+            <label for="stocksSymbols">Symbols (comma-separated):</label>
+            <input type="text" id="stocksSymbols" name="Stocks.Symbols" value="TSA,CSDD,DSSE,PEP">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function toggleSection(sectionName) {
+            const checkbox = document.getElementById('option' + sectionName.charAt(0).toUpperCase() + sectionName.slice(1));
+            const section = document.getElementById(sectionName + 'Section');
+            if (checkbox.checked) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
+        }
+
+        // Initialize sections on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleSection('train');
+            toggleSection('weather');
+            toggleSection('news');
+            toggleSection('stocks');
+        });
+    </script>
+</body>
+</html>
