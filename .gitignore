@@ -4,4 +4,4 @@ node_modules
 .env*.local
 
 mbta-json/*
-Artificats from Alpha/*
+Artifcats from Alpha/*
