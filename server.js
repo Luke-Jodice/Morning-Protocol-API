@@ -24,6 +24,8 @@ app.get("/ExampleData.json", (req, res) => {
   res.sendFile(path.join(__dirname, "ExampleData.json"));
 });
 
+
+//When the user is accessing the website on its own
 app.post("/register", async (req, res) => {
   try {
     const { email, password, name, phone } = req.body;
@@ -73,6 +75,7 @@ app.get("/session", (req, res) => {
   res.json(req.session);
 });
 
+//Start of the information that would be needed to call the APIs to retrieve data 
 app.post("/coords", (req, res) => {
   if (!req.session.user) {
     return res.status(401).send("Unauthorized.");
@@ -82,21 +85,23 @@ app.post("/coords", (req, res) => {
   res.json({ status: "Success", long: data.long, lat: data.lat });
 });
 
+//
 //this will need to be Made as a repo on its own
+//
+
+//This will be called from Weather API service
 app.get("/weather", async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).send("Unauthorized.");
-  }
-  try {
-    const filePath = path.join(__dirname, "Artifacts from Alpha", "weatherEX.json");
-    const data = await fs.readFile(filePath, "utf8");
-    const json = JSON.parse(data);
-    const currWeather = json.current;
-    res.json(currWeather);
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+
+});
+
+//This will be called from News API service
+app.get("/news", async (req, res) => {
+ 
+});
+
+//This will be called from Stocks API service
+app.get("/stocks", async (req, res) => {
+
 });
 
 app.listen(port, () => {
